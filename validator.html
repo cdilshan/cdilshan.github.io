@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Duplicate Code Checker</title>
+</head>
+<body>
+  <h1>Code Duplicate Checker</h1>
+  <p>Paste your codes below:</p>
+  <textarea id="codeInput" rows="10" cols="50"></textarea>
+  <br>
+  <button onclick="checkDuplicates()">Check Duplicates</button>
+  <br>
+  <div id="duplicateOutput"></div>
+
+  <script>
+    function checkDuplicates() {
+      const codeInput = document.getElementById('codeInput');
+      const codes = codeInput.value.split('\n').map(code => code.trim());
+
+      // Find duplicates
+      const duplicates = findDuplicates(codes);
+
+      // Display duplicates
+      displayDuplicates(duplicates);
+    }
+
+    function findDuplicates(arr) {
+      const duplicates = [];
+      const codeMap = {};
+
+      arr.forEach(code => {
+        if (codeMap[code]) {
+          codeMap[code]++;
+        } else {
+          codeMap[code] = 1;
+        }
+      });
+
+      for (const code in codeMap) {
+        if (codeMap[code] > 1) {
+          duplicates.push(code);
+        }
+      }
+
+      return duplicates;
+    }
+
+    function displayDuplicates(duplicates) {
+      const duplicateOutput = document.getElementById('duplicateOutput');
+      if (duplicates.length > 0) {
+        duplicateOutput.innerHTML = '<p>Duplicates Found:</p>';
+        const ul = document.createElement('ul');
+
+        duplicates.forEach(code => {
+          const li = document.createElement('li');
+          li.textContent = code;
+          ul.appendChild(li);
+        });
+
+        duplicateOutput.appendChild(ul);
+      } else {
+        duplicateOutput.innerHTML = '<p>No duplicates found.</p>';
+      }
+    }
+  </script>
+</body>
+</html>
